@@ -20,7 +20,7 @@ session_type = st.selectbox(
 if st.button("Load Session"):
     with st.spinner("Fetching Results"):
 
-        if session_type == "FP1" or session_type == "FP2" or session_type == "FP3":
+        if session_type in ["FP1", "FP2", "FP3"]:
             print("Free Practice")
             fp_session = load_session(year, race, session_type)
             st.success("Session Loaded!")
@@ -39,7 +39,7 @@ if st.button("Load Session"):
             )
 
             st.dataframe(fp_results, hide_index=True)
-        elif session_type == "Race":
+        elif session_type in ["Race", "Sprint Race"]:
             print("Race")
             session = load_session(year, race, session_type)
             st.success("Session loaded!")
@@ -70,6 +70,7 @@ if st.button("Load Session"):
             st.dataframe(race_results, hide_index=True)
 
 
+"""
 match year:
     case 2018:
         pass
@@ -92,3 +93,4 @@ match year:
         pass
     case 2026:
         pass
+"""
