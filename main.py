@@ -1,6 +1,7 @@
 import fastf1
 import streamlit as st
 from core.loader import load_session
+from core.timing import timing
 
 fastf1.Cache.enable_cache("cache/")
 
@@ -11,7 +12,7 @@ year = st.selectbox("Year", range(2018, 2027))
 race = st.text_input("Race (e.g. 'Australia')")
 session_type = st.selectbox(
     "Session",
-    ["FP1", "FP2", "FP3", "Sprint Shootout", "Sprint Race", "Qualifying", "Race"],
+    ["FP1", "FP2", "FP3", "Sprint Shootout", "Sprint", "Qualifying", "Race"],
 )
 
 
@@ -24,6 +25,7 @@ if st.button("Load Session"):
             print("Free Practice")
             fp_session = load_session(year, race, session_type)
             st.success("Session Loaded!")
+            timing()
             st.write(f"{session_type} Results")
             fp_results = fp_session.results[
                 ["Position", "FullName", "TeamName", "Laps", "Time"]
@@ -39,9 +41,11 @@ if st.button("Load Session"):
             )
 
             st.dataframe(fp_results, hide_index=True)
-        elif session_type in ["Race", "Sprint Race"]:
+        elif session_type in ["Race", "Sprint"]:
             print("Race")
             session = load_session(year, race, session_type)
+            print(session.results)
+            timing(year, race, session_type)
             st.success("Session loaded!")
             st.write(f"{session_type} Results")
             race_results = session.results[
@@ -68,29 +72,3 @@ if st.button("Load Session"):
                 }
             )
             st.dataframe(race_results, hide_index=True)
-
-
-"""
-match year:
-    case 2018:
-        pass
-    case 2019:
-        pass
-    case 2020:
-        pass
-    case 2021:
-        match race:
-            case ["British", "Imola", "Brazilian"]:
-                print("Sprint of 2021")
-        pass
-    case 2022:
-        pass
-    case 2023:
-        pass
-    case 2024:
-        pass
-    case 2025:
-        pass
-    case 2026:
-        pass
-"""
