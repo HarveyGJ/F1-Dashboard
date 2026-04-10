@@ -1,39 +1,35 @@
+import fastf1
 import streamlit as st
+from core.loader import load_session
+from core.timing import process_fp_timing
 
-x = st.slider("x")  # 👈 this is a widget
-st.write(x, "squared is", x * x)
 
-import streamlit as st
+st.title("Session Results")
+st.text("Search through Free Practice, Qualifying and Races, from 2018 to current day.")
+year = st.selectbox("Year", range(2018, 2027))
+race = st.text_input("Weekend (e.g Australia)")
+session_type = st.selectbox("Session", ["FP1", "FP2", "FP3", "Qualifying", "Race"])
 
-st.text_input("Your name", key="name")
+if st.button("Load Session"):
+    with st.spinner("Fetching Results"):
+        match session_type:
+            case "FP1" | "FP2" | "FP3":
+                fp_session = load_session(year, race, session_type)
+                print(fp_session)
+                fp_results = process_fp_timing(fp_session)
+                st.success("Session Loaded!")
+                st.write(f"{session_type} Results")
 
-# You can access the value at any point with:
-st.session_state.name
+                st.dataframe(fp_results, hide_index=True)
 
-import streamlit as st
-import numpy as np
-import pandas as pd
-
-if st.checkbox("Show dataframe"):
-    chart_data = pd.DataFrame(np.random.randn(20, 3), columns=["a", "b", "c"])
-
-    chart_data
-
-import streamlit as st
-import pandas as pd
-
-df = pd.DataFrame({"first column": [1, 2, 3, 4], "second column": [10, 20, 30, 40]})
-
-option = st.selectbox("Which number do you like best?", df["first column"])
-
-"You selected: ", option
-
-import streamlit as st
-
-# Add a selectbox to the sidebar:
-add_selectbox = st.sidebar.selectbox(
-    "How would you like to be contacted?", ("Email", "Home phone", "Mobile phone")
-)
-
-# Add a slider to the sidebar:
-add_slider = st.sidebar.slider("Select a range of values", 0.0, 100.0, (25.0, 75.0))
+            case "Race" | "Sprint":
+                pass
+            case "Qualifying" | "Sprint Shootout":
+                quali_session = load_session(year, race, session_type)
+                # quali_results = processed_quali_timing(quali_session)
+                quali_results = quali_session.results[
+                    ["DriverNumber", "FullName", "TeamName", "Q1", "Q2", "Q3"]
+                ]
+                st.dataframe(quali_results, hide_index=True)
+            case _:
+                st.error(f"Unknown session type: {session_type}")
