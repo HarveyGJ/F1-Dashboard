@@ -19,24 +19,50 @@ def format_time_to_string(timedelta_obj):
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}.{milliseconds:03d}"
 
 
-def process_race_timing(_session):
-    results_df = _session.results
-    laps_df = _session.laps
+def process_fp_timing(fp_session):
+    # Get driver info
+    drivers_info = fp_session.results[["DriverNumber", "FullName"]].drop_duplicates()
 
+    # Get best lap time and lap count from laps data
+    laps = fp_session.laps
+    best_laps = (
+        laps.groupby("DriverNumber")
+        .agg({"LapTime": "min", "LapNumber": "max", "Team": "first"})
+        .reset_index()
+    )
+
+    # Merge with driver names
+    fp_results = best_laps.merge(drivers_info, on="DriverNumber", how="left")
+
+    # Sort by lap time and add position
+    fp_results = fp_results.sort_values("LapTime").reset_index(drop=True)
+    fp_results["Position"] = range(1, len(fp_results) + 1)
+
+    # Keep only the columns we need
+    fp_results = fp_results[
+        ["Position", "FullName", "Team", "LapNumber", "LapTime"]
+    ].rename(
+        columns={
+            "FullName": "Driver",
+            "Team": "Team",
+            "LapNumber": "Laps",
+            "LapTime": "Best Lap Time",
+        }
+    )
+
+    # Format the best lap time
+    fp_results["Best Lap Time"] = fp_results["Best Lap Time"].apply(
+        format_time_to_string
+    )
+
+    return fp_results
+
+
+def process_quali_timing(quali_session):
+    drivers_info = quali_session.results[["DriverNumber", "FullName"]].drop_duplicates()
     pass
 
 
-def process_fp_timing(fp_session):
-    fp_results = fp_session.results[
-        ["Position", "FullName", "TeamName", "Laps", "Time"]
-    ].copy()
-    fp_results = fp_results.rename(
-        columns={
-            "Position": "Pos",
-            "FullName": "Driver",
-            "TeamName": "Team",
-            "Laps": "Laps",
-            "Time": "Gap",
-        }
-    )
-    return fp_results
+def process_race_timing(_session):
+
+    pass
