@@ -58,7 +58,6 @@ def process_fp_timing(fp_session):
     return fp_results
 
 
-# TODO: finish, quali timing function, return, q1,q2,q3
 def process_quali_timing(quali_session):
     quali_results = quali_session.results[
         [
@@ -122,6 +121,3 @@ def process_race_timing(race_session):
         format_time_to_string
     )
     return race_results
-
-
-print(process_quali_timing(load_session(2026, "Australia", "Qualifying")))

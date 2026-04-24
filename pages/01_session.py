@@ -5,6 +5,7 @@ from core.timing import process_fp_timing, process_race_timing, process_quali_ti
 
 
 st.title("Session Results")
+
 st.text("Search through Free Practice, Qualifying and Races, from 2018 to current day.")
 year = st.selectbox("Year", range(2018, 2027))
 race = st.text_input("Weekend (e.g Australia)")
@@ -15,9 +16,9 @@ session_type = st.selectbox(
         "FP2",
         "FP3",
         "Qualifying",
+        "Race",
         "Sprint Shootout",
         "Sprint Qualifying",
-        "Race",
         "Sprint",
     ],
 )
@@ -34,7 +35,7 @@ if st.button("Load Session"):
                     st.success("Session Loaded!")
                     st.write(f"{session_type} Results")
 
-                    st.dataframe(fp_results, hide_index=True)
+                    st.dataframe(fp_results, hide_index=True, width="content")
 
                 case "Race" | "Sprint":
                     race_session = load_session(year, race, session_type)
