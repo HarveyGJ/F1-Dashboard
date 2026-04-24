@@ -1,7 +1,7 @@
 import fastf1
 import streamlit as st
 from core.loader import load_session
-from core.timing import process_fp_timing
+from core.timing import process_fp_timing, process_race_timing
 
 
 st.title("Session Results")
@@ -23,7 +23,13 @@ if st.button("Load Session"):
                 st.dataframe(fp_results, hide_index=True)
 
             case "Race" | "Sprint":
-                pass
+                race_session = load_session(year, race, session_type)
+                race_results = process_race_timing(race_session)
+                st.success("Session Loaded!")
+                st.write(f"{session_type} Results")
+
+                st.dataframe(race_results, hide_index=True)
+
             case "Qualifying" | "Sprint Shootout":
                 quali_session = load_session(year, race, session_type)
                 # quali_results = processed_quali_timing(quali_session)

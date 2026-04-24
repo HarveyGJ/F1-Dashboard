@@ -22,7 +22,7 @@ def format_time_to_string(timedelta_obj):
 def process_fp_timing(fp_session):
     # Get driver info
     drivers_info = fp_session.results[["DriverNumber", "FullName"]].drop_duplicates()
-
+    print(drivers_info)
     # Get best lap time and lap count from laps data
     laps = fp_session.laps
     best_laps = (
@@ -30,7 +30,7 @@ def process_fp_timing(fp_session):
         .agg({"LapTime": "min", "LapNumber": "max", "Team": "first"})
         .reset_index()
     )
-
+    print(best_laps)
     # Merge with driver names
     fp_results = best_laps.merge(drivers_info, on="DriverNumber", how="left")
 
@@ -63,6 +63,57 @@ def process_quali_timing(quali_session):
     pass
 
 
-def process_race_timing(_session):
+# To-Do: Add overall race time, points and another table showing fastest lap
+def process_race_timing(race_session):
+    race_results = race_session.results[
+        ["Position", "DriverNumber", "FullName", "TeamName", "Laps", "Time", "Points"]
+    ]
+    race_results = race_results[
+        ["Position", "DriverNumber", "FullName", "TeamName", "Laps", "Time", "Points"]
+    ].rename(
+        columns={
+            "Position": "Position",
+            "DriverNumber": "NO.",
+            "FullName": "Driver",
+            "TeamName": "Team",
+            "Laps": "Laps",
+            "Time": "Time / Retired",
+            "Points": "Points",
+        }
+    )
 
-    pass
+    race_results["Time / Retired"] = race_results["Time / Retired"].apply(
+        format_time_to_string
+    )
+    return race_results
+
+
+"""
+def wip_process_race_timings(race_session):
+    race_results = race_session.results[
+        ["Position", "DriverNumber" "FullName", "Team", "LapNumber", "Time", "Points"]
+    ]
+    race_results = race_results.rename[
+        "Position", "DriverNumber" "FullName", "Team", "LapNumber", "Time", "Points"
+    ].rename(
+        columns={
+            "Position": "Position",
+            "DriverNumber": "NO.",
+            "FullName": "Driver",
+            "Team": "Team",
+            "LapNumber": "Laps",
+            "Time": "Time / Retired",
+            "Points": "Points",
+        }
+    )
+
+    race_results["Time / Retired"] = race_results["Time/ Retired"].apply(
+        format_time_to_string
+    )
+    print(race_results)
+    return race_results
+
+
+print(wip_process_race_timings(load_session(2026, "Australia", "Race")))
+# print(process_race_timing(load_session(2026, "Australia", "Race")))
+"""
