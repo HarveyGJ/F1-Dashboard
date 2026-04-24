@@ -58,12 +58,12 @@ def process_fp_timing(fp_session):
     return fp_results
 
 
+# TODO: finish, quali timing function, return, q1,q2,q3
 def process_quali_timing(quali_session):
     drivers_info = quali_session.results[["DriverNumber", "FullName"]].drop_duplicates()
     pass
 
 
-# To-Do: Add overall race time, points and another table showing fastest lap
 def process_race_timing(race_session):
     race_results = race_session.results[
         ["Position", "DriverNumber", "FullName", "TeamName", "Laps", "Time", "Points"]
@@ -86,34 +86,3 @@ def process_race_timing(race_session):
         format_time_to_string
     )
     return race_results
-
-
-"""
-def wip_process_race_timings(race_session):
-    race_results = race_session.results[
-        ["Position", "DriverNumber" "FullName", "Team", "LapNumber", "Time", "Points"]
-    ]
-    race_results = race_results.rename[
-        "Position", "DriverNumber" "FullName", "Team", "LapNumber", "Time", "Points"
-    ].rename(
-        columns={
-            "Position": "Position",
-            "DriverNumber": "NO.",
-            "FullName": "Driver",
-            "Team": "Team",
-            "LapNumber": "Laps",
-            "Time": "Time / Retired",
-            "Points": "Points",
-        }
-    )
-
-    race_results["Time / Retired"] = race_results["Time/ Retired"].apply(
-        format_time_to_string
-    )
-    print(race_results)
-    return race_results
-
-
-print(wip_process_race_timings(load_session(2026, "Australia", "Race")))
-# print(process_race_timing(load_session(2026, "Australia", "Race")))
-"""
