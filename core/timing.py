@@ -60,7 +60,43 @@ def process_fp_timing(fp_session):
 
 # TODO: finish, quali timing function, return, q1,q2,q3
 def process_quali_timing(quali_session):
-    drivers_info = quali_session.results[["DriverNumber", "FullName"]].drop_duplicates()
+    quali_results = quali_session.results[
+        [
+            "Position",
+            "DriverNumber",
+            "FullName",
+            "TeamName",
+            "Q1",
+            "Q2",
+            "Q3",
+        ]
+    ]
+    print(quali_results)
+    quali_results = quali_results[
+        [
+            "Position",
+            "DriverNumber",
+            "FullName",
+            "TeamName",
+            "Q1",
+            "Q2",
+            "Q3",
+        ]
+    ].rename(
+        columns={
+            "Position": "Position",
+            "DriverNumber": "NO.",
+            "FullName": "Driver",
+            "TeamName": "Team",
+            "Q1": "Q1",
+            "Q2": "Q2",
+            "Q3": "Q3",
+        }
+    )
+    quali_results["Q1"] = quali_results["Q1"].apply(format_time_to_string)
+    quali_results["Q2"] = quali_results["Q2"].apply(format_time_to_string)
+    quali_results["Q3"] = quali_results["Q3"].apply(format_time_to_string)
+    return quali_results
     pass
 
 
@@ -86,3 +122,6 @@ def process_race_timing(race_session):
         format_time_to_string
     )
     return race_results
+
+
+print(process_quali_timing(load_session(2026, "Australia", "Qualifying")))
