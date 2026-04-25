@@ -20,10 +20,10 @@ def format_time_to_string(timedelta_obj):
 
 
 def process_fp_timing(fp_session):
-    # Get driver info
+
     drivers_info = fp_session.results[["DriverNumber", "FullName"]].drop_duplicates()
     print(drivers_info)
-    # Get best lap time and lap count from laps data
+
     laps = fp_session.laps
     best_laps = (
         laps.groupby("DriverNumber")
@@ -31,14 +31,12 @@ def process_fp_timing(fp_session):
         .reset_index()
     )
     print(best_laps)
-    # Merge with driver names
+
     fp_results = best_laps.merge(drivers_info, on="DriverNumber", how="left")
 
-    # Sort by lap time and add position
     fp_results = fp_results.sort_values("LapTime").reset_index(drop=True)
     fp_results["Position"] = range(1, len(fp_results) + 1)
 
-    # Keep only the columns we need
     fp_results = fp_results[
         ["Position", "FullName", "Team", "LapNumber", "LapTime"]
     ].rename(
@@ -50,7 +48,6 @@ def process_fp_timing(fp_session):
         }
     )
 
-    # Format the best lap time
     fp_results["Best Lap Time"] = fp_results["Best Lap Time"].apply(
         format_time_to_string
     )
@@ -70,7 +67,6 @@ def process_quali_timing(quali_session):
             "Q3",
         ]
     ]
-    print(quali_results)
     quali_results = quali_results[
         [
             "Position",
