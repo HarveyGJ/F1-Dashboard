@@ -15,4 +15,6 @@ A Python application to view Formula 1 data, see all session timings, results, p
 ### Requirements:
 - Fastf1
 - Streamlit
+- MatPlotLib
 - Python 3.14
+- 
