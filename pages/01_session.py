@@ -4,7 +4,6 @@ import time
 from core.loader import load_session
 from core.timing import process_fp_timing, process_race_timing, process_quali_timing
 
-
 st.set_page_config(layout="wide")
 
 col1, col2 = st.columns([4, 8])
@@ -37,7 +36,7 @@ with col1:
                     match session_type:
                         case "FP1" | "FP2" | "FP3":
                             fp_session = load_session(year, race, session_type)
-                            print(fp_session)
+
                             fp_results = process_fp_timing(fp_session)
 
                             success = st.success("Session Loaded!")
