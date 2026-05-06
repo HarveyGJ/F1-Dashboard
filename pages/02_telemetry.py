@@ -2,7 +2,8 @@ import fastf1
 import streamlit as st
 import matplotlib
 from core.loader import load_session_tel
-from core.telemetry import process_fp_telemetry
+
+# from core.telemetry import process_fp_telemetry
 
 st.set_page_config(layout="wide")
 
