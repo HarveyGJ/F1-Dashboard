@@ -29,7 +29,10 @@ with col1:
             "Sprint",
         ],
     )
-    driver_select = st.selectbox("Driver", [])
+    # fast load to get drivers names to input into driver_select
+
+    driver_select = st.multiselect("Driver", ["HAM", "VER", "LEC", "NOR"])
+    print(driver_select)
 
     if st.button("Load Session"):
         with st.spinner("Fetching Results"):

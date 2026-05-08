@@ -1,42 +1,36 @@
-import fastf1.plotting
+import fastf1
 import streamlit as st
-import matplotlib.pyplot as plt
+import matplotlib
+from core.loader import load_session_tel
 
-fastf1.Cache.enable_cache("~/Programming/F1-Dashboard/cache")
+# from core.telemetry import process_fp_telemetry
 
-fastf1.plotting.setup_mpl(mpl_timedelta_support=True, color_scheme="fastf1")
+st.set_page_config(layout="wide")
 
-session = fastf1.get_session(2025, "Silverstone", "Race")
-session.load()
+col1, col2 = st.columns([4, 8])
 
+col1.subheader("Search through Sessions\n\n 2018 - Current Day.", divider="grey")
 
-ver_lap = session.laps.pick_drivers("VER").pick_fastest()
-ham_lap = session.laps.pick_drivers("HAM").pick_fastest()
-nor_lap = session.laps.pick_drivers("NOR").pick_fastest()
+col2.subheader("Session Results", text_alignment="center")
 
-ver_tel = ver_lap.get_car_data().add_distance()
-ham_tel = ham_lap.get_car_data().add_distance()
-nor_tel = nor_lap.get_car_data().add_distance()
-print(ver_tel, ham_tel, nor_tel)
+with col1:
+    year = st.selectbox("Year", range(2018, 2027))
+    race = st.text_input("Weekend", placeholder="e.g British Grand Prix or Silverstone")
+    session_type = st.selectbox(
+        "Session",
+        [
+            "FP1",
+            "FP2",
+            "FP3",
+            "Qualifying",
+            "Race",
+            "Sprint Shootout",
+            "Sprint Qualifying",
+            "Sprint",
+        ],
+    )
+    # fast load to get drivers names to input into driver_select
 
-rbr_color = fastf1.plotting.get_team_color(ver_lap["Team"], session=session)
-mer_color = fastf1.plotting.get_team_color(ham_lap["Team"], session=session)
-mcl_color = fastf1.plotting.get_team_color(nor_lap["Team"], session=session)
-fer_color = fastf1.plotting.get_team_color()
+    driver_select = st.multiselect("Driver", ["HAM", "VER", "LEC", "NOR"])
 
-
-fig, ax = plt.subplots()
-ax.plot(ver_tel["Distance"], ver_tel["Speed"], color=rbr_color, label="VER")
-ax.plot(ham_tel["Distance"], ham_tel["Speed"], color=mer_color, label="HAM")
-ax.plot(nor_tel["Distance"], nor_tel["Speed"], color=mcl_color, label="NOR")
-
-ax.set_xlabel("Distance in m")
-ax.set_ylabel("Speed in km/h")
-
-ax.legend()
-plt.suptitle(
-    f"Fastest lap comparison \n"
-    f"{session.event["EventName"]} {session.event.year} Race"
-)
-
-st.pyplot(fig)
+    print(driver_select)
