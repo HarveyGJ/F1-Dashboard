@@ -29,7 +29,7 @@ with col1:
             "Sprint",
         ],
     )
-    # fast load to get drivers names to input into driver_select
+    # dynamic loader to input into drivers select based on year and race
 
     driver_select = st.multiselect("Driver", ["HAM", "VER", "LEC", "NOR"])
     print(driver_select)
