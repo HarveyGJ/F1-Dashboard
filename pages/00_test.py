@@ -1,8 +1,8 @@
 import fastf1
 import streamlit as st
 import matplotlib
-from core.loader import load_session_tel
-from core.telemetry import process_fp_telemetry
+from core.loader import load_session, driver_abb_fast_loader
+from core.telemetry import process_tel
 
 st.set_page_config(layout="wide")
 
@@ -29,29 +29,30 @@ with col1:
         ],
     )
     # fast loader to get drivers names - dynamically change upon getting year, race & session_type
-    session = fastf1.get_session(year, race, session_type)
-    session.load(laps=False, telemetry=False, messages=False)
-    drivers_abb = session.results["Abbreviation"]
 
-    drivers = [driver for driver in drivers_abb]
-
-    driver_selection = st.multiselect("Driver", drivers)
+    driver_selection = st.multiselect(
+        "Driver", driver_abb_fast_loader(year, race, session_type)
+    )
 
     if st.button("Load Session"):
         with st.spinner("Fetching Results"):
             try:
                 with col2:
                     match session_type:
-                        case "FP1" | "FP2" | "FP3":
-                            fp_session_tel = load_session_tel(year, race, session_type)
+                        case (
+                            "FP1"
+                            | "FP2"
+                            | "FP3"
+                            | "Qualifying"
+                            | "Race"
+                            | "Sprint Shootout"
+                            | "Sprint Qualifying"
+                            | "Sprint"
+                        ):
 
-                            fp_telemetry = process_fp_telemetry(
-                                fp_session_tel, driver_selection
-                            )
-
-                        case "Race" | "Sprint":
-                            pass
-                        case "Qualifying" | "Sprint Shootout" | "Sprint Qualifying":
+                            session = load_session(year, race, session_type)
+                            session_results = process_tel(session, driver_selection)
+                            st.pyplot(session_results)
                             pass
                         case _:
                             pass

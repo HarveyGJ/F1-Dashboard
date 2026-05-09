@@ -1,4 +1,4 @@
-"""import fastf1.plotting
+import fastf1.plotting
 import streamlit as st
 import matplotlib.pyplot as plt
 
@@ -56,4 +56,3 @@ ax.set_ylim([v_min - 40, v_max + 20])
 
 
 st.pyplot(fig)
-"""
