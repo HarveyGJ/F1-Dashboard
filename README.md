@@ -17,4 +17,3 @@ A Python application to view Formula 1 data, see all session timings, results, p
 - Streamlit
 - MatPlotLib
 - Python 3.14
-- 
