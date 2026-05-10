@@ -1,15 +1,15 @@
-import fastf1
 import streamlit as st
-import matplotlib
-from core.loader import load_session_tel
-
-# from core.telemetry import process_fp_telemetry
+from core.loader import load_session, driver_abb_fast_loader
+from core.telemetry import process_tel
 
 st.set_page_config(layout="wide")
 
 col1, col2 = st.columns([4, 8])
 
-col1.subheader("Search through Sessions\n\n 2018 - Current Day.", divider="grey")
+col1.subheader(
+    "Search through sessions\n\n Choose drivers you'd like to compare Fastests laps of a selected session.\n\n 2018 - Current Day.",
+    divider="grey",
+)
 
 col2.subheader("Session Results", text_alignment="center")
 
@@ -29,26 +29,34 @@ with col1:
             "Sprint",
         ],
     )
-    # dynamic loader to input into drivers select based on year and race
+    # fast loader to get drivers names - dynamically change upon getting year, race & session_type
 
-    driver_select = st.multiselect("Driver", ["HAM", "VER", "LEC", "NOR"])
-    print(driver_select)
+    driver_selection = st.multiselect(
+        "Driver", driver_abb_fast_loader(year, race, session_type)
+    )
 
     if st.button("Load Session"):
         with st.spinner("Fetching Results"):
             try:
                 with col2:
                     match session_type:
-                        case "FP1" | "FP2" | "FP3":
-                            fp_session_tel = load_session_tel(year, race, session_type)
-                            print(fp_session_tel)
+                        case (
+                            "FP1"
+                            | "FP2"
+                            | "FP3"
+                            | "Qualifying"
+                            | "Race"
+                            | "Sprint Shootout"
+                            | "Sprint Qualifying"
+                            | "Sprint"
+                        ):
 
-                            fp_telemetry = process_fp_telemetry(fp_session_tel)
-
-                        case "Race" | "Sprint":
-                            pass
-                        case "Qualifying" | "Sprint Shootout" | "Sprint Qualifying":
-                            pass
+                            session = load_session(year, race, session_type)
+                            session_results = process_tel(session, driver_selection)
+                            st.pyplot(session_results)
+                            st.warning(
+                                "Drivers that are not displayed would be down as a DNS and have no fastest lap data"
+                            )
                         case _:
                             pass
                             st.error(f"Unknown session type: {session_type}")

@@ -1,6 +1,4 @@
-import fastf1
 import streamlit as st
-import matplotlib
 from core.loader import load_session, driver_abb_fast_loader
 from core.telemetry import process_tel
 
@@ -8,7 +6,10 @@ st.set_page_config(layout="wide")
 
 col1, col2 = st.columns([4, 8])
 
-col1.subheader("Search through Sessions\n\n 2018 - Current Day.", divider="grey")
+col1.subheader(
+    "Search through sessions\n\n Choose drivers you'd like to compare Fastests laps of a selected session.\n\n 2018 - Current Day.",
+    divider="grey",
+)
 
 col2.subheader("Session Results", text_alignment="center")
 
@@ -53,7 +54,9 @@ with col1:
                             session = load_session(year, race, session_type)
                             session_results = process_tel(session, driver_selection)
                             st.pyplot(session_results)
-                            pass
+                            st.warning(
+                                "Drivers that are not displayed would be down as a DNS and have no fastest lap data"
+                            )
                         case _:
                             pass
                             st.error(f"Unknown session type: {session_type}")
