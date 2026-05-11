@@ -1,7 +1,7 @@
 import fastf1
 import streamlit as st
 import time
-from core.loader import load_session
+from core.loader import load_session, load_races
 from core.timing import process_fp_timing, process_race_timing, process_quali_timing
 
 st.set_page_config(layout="wide")
@@ -14,7 +14,7 @@ col2.subheader("Session Results", text_alignment="center")
 
 with col1:
     year = st.selectbox("Year", range(2018, 2027))
-    race = st.text_input("Weekend", placeholder="e.g British Grand Prix or Silverstone")
+    race = st.selectbox("Weekend", load_races(year))
     session_type = st.selectbox(
         "Session",
         [

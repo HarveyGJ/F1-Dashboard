@@ -11,7 +11,7 @@ fastf1.plotting.setup_mpl(mpl_timedelta_support=True, color_scheme="fastf1")
 
 def process_tel(session_tel, driver_selection):
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(10, 4))
     for driver in driver_selection:
         try:
             d_laps = driver_laps(session_tel, driver)

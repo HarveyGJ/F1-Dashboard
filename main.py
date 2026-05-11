@@ -3,7 +3,7 @@ import streamlit as st
 from core.loader import load_session
 from core.timing import process_race_timing
 
-fastf1.Cache.enable_cache("cache/")
+fastf1.Cache.enable_cache("~/Programming/F1-Dashboard/cache/")
 
 st.title("F1 Dashboard")
 
