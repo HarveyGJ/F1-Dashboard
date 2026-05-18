@@ -39,29 +39,12 @@ with col1:
         with st.spinner("Fetching Results"):
             try:
                 with col2:
-                    match session_type:
-                        case (
-                            "FP1"
-                            | "FP2"
-                            | "FP3"
-                            | "Qualifying"
-                            | "Race"
-                            | "Sprint Shootout"
-                            | "Sprint Qualifying"
-                            | "Sprint"
-                        ):
-
-                            session = load_session(year, race, session_type)
-                            session_results = process_tel(session, driver_selection)
-                            st.pyplot(session_results)
-                            st.warning(
+                    session = load_session(year, race, session_type)
+                    session_results = process_tel(session, driver_selection)
+                    st.pyplot(session_results)
+                    st.warning(
                                 "Drivers that are not displayed would be down as a DNS and have no fastest lap data"
-                            )
-                        
-                        
-                        case _:
-                            pass
-                            st.error(f"Unknown session type: {session_type}")
+                            )       
             except ValueError as e:
                 st.error(
                     f"Session not available:\n\n {session_type} may not exist for {race} {year}.\n\n Sprint Shootout is only valid the year 2023.\n\n Sprint Qualifying is valid for the year 2024.\n\n {str(e)}"

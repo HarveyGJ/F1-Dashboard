@@ -25,7 +25,7 @@ def process_tel(session_tel, driver_selection):
                 label=driver,
             )
         except:
-            None
+            pass
     ax.legend()
     plt.suptitle(
         f"Fastest lap comparison \n"

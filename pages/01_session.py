@@ -6,7 +6,7 @@ from core.timing import process_fp_timing, process_race_timing, process_quali_ti
 
 st.set_page_config(layout="wide")
 
-col1, col2 = st.columns([4, 8])
+col1, col2 = st.columns([2, 8])
 
 col1.subheader("Search through Sessions\n\n 2018 - Current Day.", divider="grey")
 
