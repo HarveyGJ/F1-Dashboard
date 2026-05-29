@@ -2,7 +2,7 @@ import fastf1.plotting
 import matplotlib.pyplot as plt
 import streamlit as st
 
-fastf1.Cache.enable_cache("~/Programming/F1-Dashboard/cache")
+fastf1.Cache.enable_cache("./cache")
 
 fastf1.plotting.setup_mpl(mpl_timedelta_support=True, color_scheme="fastf1")
 

@@ -1,3 +1,4 @@
 fastf1
 streamlit
 matplotlib
+seaborn

@@ -24,7 +24,7 @@ def load_session_tel(year, race, session_type):
 
 
 def load_races(year):
-    session = fastf1.get_event_schedule(2018)
+    session = fastf1.get_event_schedule(year)
     gp_names = session["OfficialEventName"].tolist()
     return gp_names
 

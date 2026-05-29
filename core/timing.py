@@ -30,7 +30,6 @@ def process_fp_timing(fp_session):
         .agg({"LapTime": "min", "LapNumber": "max", "Team": "first"})
         .reset_index()
     )
-    print(best_laps)
 
     fp_results = best_laps.merge(drivers_info, on="DriverNumber", how="left")
 
