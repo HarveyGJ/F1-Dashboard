@@ -10,7 +10,7 @@ fastf1.plotting.setup_mpl(mpl_timedelta_support=True, color_scheme="fastf1")
 
 
 def process_tel(session_tel, driver_selection):
-
+    race = session_tel
     fig, ax = plt.subplots(figsize=(10, 4))
     for driver in driver_selection:
         try:
@@ -27,10 +27,7 @@ def process_tel(session_tel, driver_selection):
         except:
             pass
     ax.legend()
-    plt.suptitle(
-        f"Fastest lap comparison \n"
-        f"{session_tel.event["EventName"]} {session_tel.event.year} Race"
-    )
+    plt.suptitle(f"{race} Lap Time Distributions")
 
     ax.set_xlabel("Distance in m")
     ax.set_ylabel("Speed in km/h")

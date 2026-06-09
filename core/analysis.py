@@ -6,7 +6,7 @@ import fastf1.plotting
 
 fastf1.plotting.setup_mpl(mpl_timedelta_support=True, color_scheme="fastf1")
 
-race = fastf1.get_session(2026, "Australia", "Race")
+"""race = fastf1.get_session(2026, "Australia", "Race")
 race.load()
 
 point_finishers = race.drivers[:10]
@@ -46,7 +46,7 @@ plt.suptitle(f"{race} Lap Time Distributions")
 sns.despine(left=True,bottom=True)
 
 plt.tight_layout()
-plt.show()
+plt.show()"""
 
 def lap_time_distributions(session, driver_selection):
     race = session
