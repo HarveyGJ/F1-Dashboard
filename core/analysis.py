@@ -87,5 +87,4 @@ def lap_time_distributions(session, driver_selection):
     sns.despine(left=True,bottom=True)
 
     plt.tight_layout()
-    #plt.show()
     return fig 
