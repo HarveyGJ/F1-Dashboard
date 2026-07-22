@@ -6,9 +6,6 @@ fastf1.Cache.enable_cache("./cache")
 
 fastf1.plotting.setup_mpl(mpl_timedelta_support=True, color_scheme="fastf1")
 
-# dynamically assign variables to names of drivers then discard after ive processed the telemetry
-
-
 def process_tel(session_tel, driver_selection):
     race = session_tel
     fig, ax = plt.subplots(figsize=(10, 4))

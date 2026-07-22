@@ -1,7 +1,6 @@
 import fastf1
 from fastf1.ergast import Ergast
 
-
    
 def get_drivers_standings(season, round_number):
     ergast = Ergast()

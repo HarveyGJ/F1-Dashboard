@@ -1,6 +1,10 @@
+from pathlib import Path
 import fastf1
 import streamlit as st
 
+from core.config import CACHE_DIR
+
+fastf1.Cache.enable_cache(str(CACHE_DIR))
 
 @st.cache_data
 def load_session(year, race, session_type):
