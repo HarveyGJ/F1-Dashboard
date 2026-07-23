@@ -1,27 +1,38 @@
 import fastf1
 import streamlit as st
 from core.wdc import get_drivers_standings
+from datetime import datetime
 fastf1.Cache.enable_cache("./cache")
 
-st.title("F1 Dashboard")
 
-st.text(
-    "Navigate through the pages to find; Session Results, Telemetry Data, Lap Analysis, Who can still win the World Drivers Championship and Standings."
-)
-col1, col2 = st.columns([2, 8])
 
-col1.subheader(
-    "Select current weekend to get drivers standings.", divider="grey"
-)
+st.title("F1 Dashboard", text_alignment='center')
 
-col2.subheader("Results", text_alignment="center")
 
-with col1:
-    season = st.selectbox("Season", range(2026, 2027))
-    round_number = st.selectbox("Current Round", range(1, 25))
+current_year = datetime.now().year
+schedule = fastf1.events.get_event_schedule(current_year)
 
-    """if st.button("Calculate"):
-        with st.spinner("Calculating Results"):
-            with col2:
-            # get current date to work out what weekend of the what year it is and what GP num is currently running/not running
-            # use that to display standings as soon as the page loads - might be restricted by streamlit functionality"""
+
+today = datetime.now().strftime("%Y-%m-%d")
+completed_rounds = schedule[schedule["EventDate"] <= today]
+
+if not completed_rounds.empty:
+
+    latest_round = completed_rounds.iloc[-1]["RoundNumber"]
+
+    standings = get_drivers_standings(current_year, latest_round)
+    
+    df_display = standings[['position', 'givenName', 'familyName', 'points']].copy()
+    df_display['Driver'] = df_display['givenName'] + ' ' + df_display['familyName']
+    df_display = df_display[['position', 'Driver', 'points']]
+    df_display.columns = ['Position', 'Driver', 'Points']
+    
+    st.subheader(f"Driver Standings - Round {latest_round}", text_alignment='center')
+    st.dataframe(df_display, hide_index=True, use_container_width="True" )
+    
+else:
+    st.info("No rounds have been completed yet this season.")
+
+
+st.text("Navigate through the pages to find; Session Results, Telemetry Data, Lap Analysis, Who can still win the World Drivers Championship and Standings.", text_alignment='center')
+
