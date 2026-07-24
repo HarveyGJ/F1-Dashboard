@@ -2,8 +2,6 @@ import fastf1.plotting
 import matplotlib.pyplot as plt
 import streamlit as st
 
-fastf1.Cache.enable_cache("./cache")
-
 fastf1.plotting.setup_mpl(mpl_timedelta_support=True, color_scheme="fastf1")
 
 def process_tel(session_tel, driver_selection):
