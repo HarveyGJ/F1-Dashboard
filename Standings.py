@@ -1,8 +1,10 @@
 import fastf1
 import streamlit as st
+from core.config import CACHE_DIR
 from core.wdc import get_drivers_standings
 from datetime import datetime
-fastf1.Cache.enable_cache("./cache")
+
+fastf1.Cache.enable_cache(str(CACHE_DIR))
 
 
 
