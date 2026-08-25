@@ -1,6 +1,7 @@
 import fastf1
 import streamlit as st
 from core.config import CACHE_DIR
+from core.loader import load_event_schedule
 from core.wdc import get_drivers_standings
 from datetime import datetime
 
@@ -12,7 +13,7 @@ st.title("F1 Dashboard", text_alignment='center')
 
 
 current_year = datetime.now().year
-schedule = fastf1.events.get_event_schedule(current_year)
+schedule = load_event_schedule(current_year)
 
 
 today = datetime.now().strftime("%Y-%m-%d")

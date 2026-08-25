@@ -1,18 +1,22 @@
 import fastf1
+import streamlit as st
 from fastf1.ergast import Ergast
+from core.loader import load_event_schedule
 
    
+@st.cache_data(ttl="10m")
 def get_drivers_standings(season, round_number):
     ergast = Ergast()
     standings = ergast.get_driver_standings(season=season, round=round_number)
     return standings.content[0]
 
 
+@st.cache_data(ttl="1h")
 def calculate_max_points_for_remaining_season(season, round_number):
     POINTS_FOR_SPRINT = 8 + 25 
     POINTS_FOR_CONVENTIONAL = 25  
     
-    events = fastf1.events.get_event_schedule(season, backend='ergast')
+    events = load_event_schedule(season, backend='ergast')
     events = events[events['RoundNumber'] > round_number]
     
     

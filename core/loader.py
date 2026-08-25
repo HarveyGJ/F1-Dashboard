@@ -6,6 +6,11 @@ from core.config import CACHE_DIR
 
 fastf1.Cache.enable_cache(str(CACHE_DIR))
 
+@st.cache_data(ttl="1h")
+def load_event_schedule(year, backend=None):
+    return fastf1.events.get_event_schedule(year, backend=backend)
+
+
 @st.cache_resource
 def load_session(year, race, session_type):
     session = fastf1.get_session(year, race, session_type)
@@ -27,8 +32,9 @@ def load_session_tel(year, race, session_type):
     return session
 
 
+@st.cache_data(ttl="1h")
 def load_races(year):
-    session = fastf1.get_event_schedule(year)
+    session = load_event_schedule(year)
     gp_names = session["OfficialEventName"].tolist()
     return gp_names
 
